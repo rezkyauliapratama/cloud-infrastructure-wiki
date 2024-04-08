@@ -9,3 +9,5 @@
 *.tfstate
 *.tfstate.*
 
+# tfvars
+*.tfvars
