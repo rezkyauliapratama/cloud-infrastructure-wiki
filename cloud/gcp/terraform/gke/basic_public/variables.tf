@@ -25,7 +25,7 @@ variable "region" {
 variable "preemptible" {
   type        = bool
   description = "Allow the instance to be preempted"
-  default     = false
+  default     = true
 }
 
 

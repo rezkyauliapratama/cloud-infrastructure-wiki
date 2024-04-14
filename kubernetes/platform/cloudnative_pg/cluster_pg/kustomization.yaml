@@ -1,0 +1,9 @@
+---
+namespace: cloudnative-pg
+helmCharts:
+  - name: cluster
+    repo: https://cloudnative-pg.github.io/charts
+    namespace: cloudnative-pg 
+    version: 0.0.7
+    releaseName: cluster 
+    valuesFile: values.yaml

@@ -1,0 +1,7 @@
+kind: Kustomization
+namespace: cloudnative-pg
+resources:
+  - secret.yaml
+  - configmap.yaml
+  - service.yaml
+  - statefulset.yaml
