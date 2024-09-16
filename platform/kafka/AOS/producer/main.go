@@ -7,10 +7,11 @@ import (
 )
 
 func main() {
-	// Producer configuration
+	// Producer configuration for default semantics (At-Least-Once)
 	producer, err := kafka.NewProducer(&kafka.ConfigMap{
-		"bootstrap.servers": "localhost:19092,localhost:29092,localhost:39092", // Kafka broker address
-		"acks":              "all",                                             // Ensure message delivery by all in-sync replicas
+		"bootstrap.servers": "localhost:9092,localhost:9093,localhost:9094", // Kafka broker address
+		"acks":              "1",                                            // Wait for leader acknowledgment (default behavior)
+		"retries":           3,                                              // Retries in case of failures (can lead to duplicate messages)
 	})
 	if err != nil {
 		log.Fatalf("Failed to create producer: %s", err)

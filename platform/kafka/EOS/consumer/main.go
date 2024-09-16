@@ -16,7 +16,7 @@ type TransactionalMessage struct {
 func main() {
 	// Create a new consumer configuration
 	config := &kafka.ConfigMap{
-		"bootstrap.servers":  "localhost:19092,localhost:29092,localhost:39092",
+		"bootstrap.servers":  "localhost:9092,localhost:9093,localhost:9094",
 		"group.id":           "exactly-once-consumer-group",
 		"auto.offset.reset":  "earliest",
 		"enable.auto.commit": false,            // Disable auto-commit of offsets

@@ -9,9 +9,11 @@ import (
 func main() {
 	// Consumer configuration for default semantics (At-Least-Once)
 	consumer, err := kafka.NewConsumer(&kafka.ConfigMap{
-		"bootstrap.servers": "localhost:19092,localhost:29092,localhost:39092", // Kafka broker address
-		"group.id":          "my-consumer-group",                               // Consumer group ID
-		"auto.offset.reset": "earliest",                                        // Start reading from the earliest message
+		"bootstrap.servers":       "localhost:9092,localhost:9093,localhost:9094", // Kafka broker address
+		"group.id":                "at-least-once-group",                          // Consumer group ID
+		"auto.offset.reset":       "earliest",                                     // Start reading from the earliest offset
+		"enable.auto.commit":      true,                                           // Automatically commit offsets (default)
+		"auto.commit.interval.ms": 5000,                                           // Commit offsets every 5 seconds (default)
 	})
 	if err != nil {
 		log.Fatalf("Failed to create consumer: %s", err)
@@ -31,7 +33,7 @@ func main() {
 	for {
 		msg, err := consumer.ReadMessage(-1) // Blocking call to read messages
 		if err == nil {
-			log.Printf("Consumed message: %s, Offset: %d", string(msg.Value), msg.TopicPartition.Offset)
+			log.Printf("Consumed message: %s, Partition: %d, Offset: %d", string(msg.Value), msg.TopicPartition.Partition, msg.TopicPartition.Offset)
 			// Here, we are using default offset committing (automatic commit)
 			// The consumer will commit offsets automatically after processing.
 		} else {
