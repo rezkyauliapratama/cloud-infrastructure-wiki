@@ -1,0 +1,20 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/component: redpanda
+    app.kubernetes.io/instance: redpanda
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redpanda
+    helm.sh/chart: redpanda-5.9.4
+  name: redpanda
+  namespace: redpanda
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: redpanda-statefulset
+      app.kubernetes.io/instance: redpanda
+      app.kubernetes.io/name: redpanda
+      redpanda.com/poddisruptionbudget: redpanda

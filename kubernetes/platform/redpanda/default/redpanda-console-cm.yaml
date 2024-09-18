@@ -1,0 +1,51 @@
+apiVersion: v1
+data:
+  config.yaml: |
+    # from .Values.console.config
+    kafka:
+      brokers:
+      - redpanda-0.redpanda.redpanda.svc.cluster.local.:9093
+      - redpanda-1.redpanda.redpanda.svc.cluster.local.:9093
+      - redpanda-2.redpanda.redpanda.svc.cluster.local.:9093
+      sasl:
+        enabled: false
+      schemaRegistry:
+        enabled: true
+        tls:
+          caFilepath: ""
+          certFilepath: ""
+          enabled: false
+          insecureSkipTlsVerify: false
+          keyFilepath: ""
+        urls:
+        - http://redpanda-0.redpanda.redpanda.svc.cluster.local.:8081
+        - http://redpanda-1.redpanda.redpanda.svc.cluster.local.:8081
+        - http://redpanda-2.redpanda.redpanda.svc.cluster.local.:8081
+      tls:
+        caFilepath: ""
+        certFilepath: ""
+        enabled: false
+        insecureSkipTlsVerify: false
+        keyFilepath: ""
+    redpanda:
+      adminApi:
+        enabled: true
+        tls:
+          caFilepath: ""
+          certFilepath: ""
+          enabled: false
+          insecureSkipTlsVerify: false
+          keyFilepath: ""
+        urls:
+        - http://redpanda.redpanda.svc.cluster.local.:9644
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/instance: redpanda
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: console
+    app.kubernetes.io/version: v2.7.0
+    helm.sh/chart: console-0.7.29
+  name: redpanda-console
+  namespace: redpanda

@@ -1,0 +1,132 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    helm.sh/hook: test
+    helm.sh/hook-delete-policy: before-hook-creation
+  labels:
+    app.kubernetes.io/component: redpanda
+    app.kubernetes.io/instance: redpanda
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redpanda
+    helm.sh/chart: redpanda-5.9.4
+  name: redpanda-test-kafka-nodelete
+  namespace: redpanda
+spec:
+  containers:
+  - command:
+    - /usr/bin/timeout
+    - "120"
+    - bash
+    - -c
+    - "set -e\n\nexists=$(rpk topic list | grep my_sample_topic | awk '{print $1}')\nif
+      [[ \"$exists\" != \"my_sample_topic\" ]]; then\n  until rpk topic create my_sample_topic
+      \n    do sleep 2\n  done\nfi\necho \"Pandas are awesome!\" | rpk topic produce
+      my_sample_topic\necho \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho
+      \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are
+      awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\"
+      | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic
+      produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho
+      \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are
+      awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\"
+      | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic
+      produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho
+      \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are
+      awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\"
+      | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic
+      produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho
+      \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are
+      awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\"
+      | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic
+      produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho
+      \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are
+      awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\"
+      | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic
+      produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho
+      \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are
+      awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\"
+      | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic
+      produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho
+      \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are
+      awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\"
+      | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic
+      produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho
+      \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are
+      awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\"
+      | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic
+      produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho
+      \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are
+      awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\"
+      | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic
+      produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho
+      \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are
+      awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\"
+      | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic
+      produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho
+      \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are
+      awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\"
+      | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic
+      produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho
+      \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are
+      awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\"
+      | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic
+      produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho
+      \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are
+      awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\"
+      | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic
+      produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho
+      \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are
+      awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\"
+      | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic
+      produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho
+      \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are
+      awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\"
+      | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic
+      produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho
+      \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are
+      awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\"
+      | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic
+      produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho
+      \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are
+      awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\"
+      | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic
+      produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho
+      \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are
+      awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\"
+      | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic
+      produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho
+      \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are
+      awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\"
+      | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic
+      produce my_sample_topic\necho \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho
+      \"Pandas are awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are
+      awesome!\" | rpk topic produce my_sample_topic\necho \"Pandas are awesome!\"
+      | rpk topic produce my_sample_topic\nsleep 2\nrpk topic consume my_sample_topic
+      -n 1 | grep \"Pandas are awesome!\"\n\n# now check if we can delete the topic
+      (we should not)\nrpk topic delete my_sample_topic\n"
+    env:
+    - name: REDPANDA_BROKERS
+      value: redpanda.redpanda.svc.cluster.local:9093
+    - name: POD_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name
+    image: docker.redpanda.com/redpandadata/redpanda:v24.2.4
+    name: redpanda
+    resources: null
+    securityContext:
+      allowPrivilegeEscalation: null
+      runAsGroup: 101
+      runAsNonRoot: null
+      runAsUser: 101
+    volumeMounts:
+    - mountPath: /etc/redpanda
+      name: config
+  restartPolicy: Never
+  securityContext:
+    fsGroup: 101
+    fsGroupChangePolicy: OnRootMismatch
+  volumes:
+  - configMap:
+      name: redpanda
+    name: config

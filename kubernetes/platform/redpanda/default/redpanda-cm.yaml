@@ -1,0 +1,113 @@
+apiVersion: v1
+data:
+  bootstrap.yaml: |-
+    audit_enabled: false
+    compacted_log_segment_size: 67108864
+    enable_rack_awareness: false
+    enable_sasl: false
+    kafka_connection_rate_limit: 1000
+    kafka_enable_authorization: false
+    log_segment_size_max: 268435456
+    log_segment_size_min: 16777216
+    max_compacted_log_segment_size: 536870912
+    storage_min_free_bytes: 1073741824
+  redpanda.yaml: |-
+    config_file: /etc/redpanda/redpanda.yaml
+    pandaproxy:
+      pandaproxy_api:
+      - address: 0.0.0.0
+        name: internal
+        port: 8082
+      - address: 0.0.0.0
+        name: default
+        port: 8083
+      pandaproxy_api_tls: null
+    pandaproxy_client:
+      brokers:
+      - address: redpanda-0.redpanda.redpanda.svc.cluster.local.
+        port: 9093
+      - address: redpanda-1.redpanda.redpanda.svc.cluster.local.
+        port: 9093
+      - address: redpanda-2.redpanda.redpanda.svc.cluster.local.
+        port: 9093
+    redpanda:
+      admin:
+      - address: 0.0.0.0
+        name: internal
+        port: 9644
+      - address: 0.0.0.0
+        name: default
+        port: 9645
+      admin_api_tls: null
+      crash_loop_limit: 5
+      empty_seed_starts_cluster: false
+      kafka_api:
+      - address: 0.0.0.0
+        name: internal
+        port: 9093
+      - address: 0.0.0.0
+        name: default
+        port: 9094
+      kafka_api_tls: null
+      rpc_server:
+        address: 0.0.0.0
+        port: 33145
+      seed_servers:
+      - host:
+          address: redpanda-0.redpanda.redpanda.svc.cluster.local.
+          port: 33145
+      - host:
+          address: redpanda-1.redpanda.redpanda.svc.cluster.local.
+          port: 33145
+      - host:
+          address: redpanda-2.redpanda.redpanda.svc.cluster.local.
+          port: 33145
+    rpk:
+      additional_start_flags:
+      - --default-log-level=info
+      - --memory=2048M
+      - --reserve-memory=205M
+      - --smp=1
+      admin_api:
+        addresses:
+        - redpanda-0.redpanda.redpanda.svc.cluster.local.:9644
+        - redpanda-1.redpanda.redpanda.svc.cluster.local.:9644
+        - redpanda-2.redpanda.redpanda.svc.cluster.local.:9644
+        tls: null
+      enable_memory_locking: false
+      kafka_api:
+        brokers:
+        - redpanda-0.redpanda.redpanda.svc.cluster.local.:9093
+        - redpanda-1.redpanda.redpanda.svc.cluster.local.:9093
+        - redpanda-2.redpanda.redpanda.svc.cluster.local.:9093
+        tls: null
+      overprovisioned: false
+      tune_aio_events: true
+    schema_registry:
+      schema_registry_api:
+      - address: 0.0.0.0
+        name: internal
+        port: 8081
+      - address: 0.0.0.0
+        name: default
+        port: 8084
+      schema_registry_api_tls: null
+    schema_registry_client:
+      brokers:
+      - address: redpanda-0.redpanda.redpanda.svc.cluster.local.
+        port: 9093
+      - address: redpanda-1.redpanda.redpanda.svc.cluster.local.
+        port: 9093
+      - address: redpanda-2.redpanda.redpanda.svc.cluster.local.
+        port: 9093
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/component: redpanda
+    app.kubernetes.io/instance: redpanda
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redpanda
+    helm.sh/chart: redpanda-5.9.4
+  name: redpanda
+  namespace: redpanda

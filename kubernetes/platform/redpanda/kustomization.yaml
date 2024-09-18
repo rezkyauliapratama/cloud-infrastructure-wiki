@@ -1,0 +1,14 @@
+#kustomization:render
+---
+namespace: redpanda
+helmCharts:
+  - name: redpanda
+    version: 5.9.4
+    repo: https://charts.redpanda.com
+    valuesFile: values.yaml
+    namespace: redpanda
+    releaseName: redpanda
+# patches:
+#   - path: patch/delete-redpanda-cm.yaml
+#   - path: patch/delete-redpanda-console-cm.yaml
+#   - path: patch/delete-redpanda-external-svc.yaml

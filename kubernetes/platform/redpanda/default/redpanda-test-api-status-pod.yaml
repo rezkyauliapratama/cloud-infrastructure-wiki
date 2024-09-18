@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    helm.sh/hook: test
+    helm.sh/hook-delete-policy: before-hook-creation
+  labels:
+    app.kubernetes.io/component: redpanda
+    app.kubernetes.io/instance: redpanda
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redpanda
+    helm.sh/chart: redpanda-5.9.4
+  name: redpanda-test-api-status
+  namespace: redpanda
+spec:
+  containers:
+  - command:
+    - /usr/bin/timeout
+    - "120"
+    - bash
+    - -c
+    - |
+      until rpk cluster info \
+        --brokers redpanda-0.redpanda.redpanda.svc.cluster.local.:9093
+        do sleep 2
+      done
+    image: docker.redpanda.com/redpandadata/redpanda:v24.2.4
+    name: redpanda
+    securityContext:
+      allowPrivilegeEscalation: null
+      runAsGroup: 101
+      runAsNonRoot: null
+      runAsUser: 101
+    volumeMounts:
+    - mountPath: /etc/redpanda
+      name: config
+  restartPolicy: Never
+  securityContext:
+    fsGroup: 101
+    fsGroupChangePolicy: OnRootMismatch
+  volumes:
+  - configMap:
+      name: redpanda
+    name: config

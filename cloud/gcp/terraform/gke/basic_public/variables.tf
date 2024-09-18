@@ -56,7 +56,7 @@ variable "default_node_min_count" {
 
 variable "default_node_max_count" {
     type = number
-    default = 3
+    default = 5
 }
 
 variable "subnet_name" {
@@ -78,5 +78,5 @@ variable "zone" {
 
 variable "spot" {
     type = bool
-    default = true
+    default = false
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -69,7 +70,7 @@ func main() {
 	}
 
 	// Commit the transaction to ensure the message is sent exactly once
-	err = producer.CommitTransaction(nil)
+	err = producer.CommitTransaction(context.TODO())
 	if err != nil {
 		log.Fatalf("Failed to commit transaction: %s", err)
 	}

@@ -1,0 +1,23 @@
+---
+resources:
+- redpanda-console-sa.yaml
+- redpanda-cm.yaml
+- redpanda-console-cm.yaml
+- redpanda-config-watcher-secret.yaml
+- redpanda-configurator-secret.yaml
+- redpanda-sts-lifecycle-secret.yaml
+- redpanda-svc.yaml
+- redpanda-console-svc.yaml
+- redpanda-console-deployment.yaml
+- redpanda-statefulset.yaml
+- redpanda-pdb.yaml
+- redpanda-configuration-job.yaml
+- redpanda-post-upgrade-job.yaml
+- redpanda-console-test-connection-pod.yaml
+- redpanda-test-api-status-pod.yaml
+- redpanda-test-console-pod.yaml
+- redpanda-test-kafka-nodelete-pod.yaml
+- redpanda-test-kafka-produce-consume-pod.yaml
+- redpanda-test-lifecycle-pod.yaml
+- redpanda-test-pandaproxy-status-pod.yaml
+- redpanda-test-rack-awareness-pod.yaml

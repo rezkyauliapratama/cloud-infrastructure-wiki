@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    helm.sh/hook: test
+  labels:
+    app.kubernetes.io/instance: redpanda
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: console
+    app.kubernetes.io/version: v2.7.0
+    helm.sh/chart: console-0.7.29
+  name: redpanda-console-test-connection
+  namespace: redpanda
+spec:
+  containers:
+  - args:
+    - redpanda-console:8080
+    command:
+    - wget
+    image: busybox
+    name: wget
+  priorityClassName: null
+  restartPolicy: Never

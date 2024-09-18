@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/component: redpanda
+    app.kubernetes.io/instance: redpanda
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redpanda
+    helm.sh/chart: redpanda-5.9.4
+    monitoring.redpanda.com/enabled: "false"
+  name: redpanda
+  namespace: redpanda
+spec:
+  clusterIP: None
+  ports:
+  - appProtocol: null
+    name: admin
+    port: 9644
+    protocol: TCP
+    targetPort: 9644
+  - name: http
+    port: 8082
+    protocol: TCP
+    targetPort: 8082
+  - name: kafka
+    port: 9093
+    protocol: TCP
+    targetPort: 9093
+  - name: rpc
+    port: 33145
+    protocol: TCP
+    targetPort: 33145
+  - name: schemaregistry
+    port: 8081
+    protocol: TCP
+    targetPort: 8081
+  publishNotReadyAddresses: true
+  selector:
+    app.kubernetes.io/component: redpanda-statefulset
+    app.kubernetes.io/instance: redpanda
+    app.kubernetes.io/name: redpanda
+  type: ClusterIP

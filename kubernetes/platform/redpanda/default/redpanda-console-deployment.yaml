@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/instance: redpanda
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: console
+    app.kubernetes.io/version: v2.7.0
+    helm.sh/chart: console-0.7.29
+  name: redpanda-console
+  namespace: redpanda
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: redpanda
+      app.kubernetes.io/name: console
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        checksum-redpanda-chart/config: cb7bf6689f131e872a4cdd270705782f18fada34c6750b49f012a2c82f950a23
+        checksum/config: 74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/instance: redpanda
+        app.kubernetes.io/name: console
+    spec:
+      affinity: {}
+      automountServiceAccountToken: true
+      containers:
+      - args:
+        - --config.filepath=/etc/console/configs/config.yaml
+        command: null
+        env: []
+        envFrom: []
+        image: docker.redpanda.com/redpandadata/console:v2.7.0
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /admin/health
+            port: http
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: console
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /admin/health
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources: {}
+        securityContext:
+          runAsNonRoot: true
+        volumeMounts:
+        - mountPath: /etc/console/configs
+          name: configs
+          readOnly: true
+      imagePullSecrets: []
+      initContainers: []
+      nodeSelector: {}
+      priorityClassName: ""
+      securityContext:
+        fsGroup: 99
+        runAsUser: 99
+      serviceAccountName: redpanda-console
+      tolerations: []
+      topologySpreadConstraints: []
+      volumes:
+      - configMap:
+          name: redpanda-console
+        name: configs
