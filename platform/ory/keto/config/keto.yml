@@ -1,0 +1,20 @@
+version: v0.12.0-alpha.0
+
+log:
+  level: debug
+
+serve:
+  read:
+    host: 0.0.0.0
+    port: 4466
+  write:
+    host: 0.0.0.0
+    port: 4467
+
+namespaces:
+  - id: 0
+    name: groups
+  - id: 1
+    name: folders
+  - id: 2
+    name: users
