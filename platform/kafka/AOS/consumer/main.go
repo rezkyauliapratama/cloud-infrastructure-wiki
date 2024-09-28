@@ -9,11 +9,11 @@ import (
 func main() {
 	// Consumer configuration for default semantics (At-Least-Once)
 	consumer, err := kafka.NewConsumer(&kafka.ConfigMap{
-		"bootstrap.servers":       "localhost:9092,localhost:9093,localhost:9094", // Kafka broker address
-		"group.id":                "at-least-once-group",                          // Consumer group ID
-		"auto.offset.reset":       "earliest",                                     // Start reading from the earliest offset
-		"enable.auto.commit":      true,                                           // Automatically commit offsets (default)
-		"auto.commit.interval.ms": 5000,                                           // Commit offsets every 5 seconds (default)
+		"bootstrap.servers":       "localhost:19092,localhost:29092,localhost:39092", // Kafka broker address
+		"group.id":                "at-least-once-group",                             // Consumer group ID
+		"auto.offset.reset":       "earliest",                                        // Start reading from the earliest offset
+		"enable.auto.commit":      true,                                              // Automatically commit offsets (default)
+		"auto.commit.interval.ms": 5000,                                              // Commit offsets every 5 seconds (default)
 	})
 	if err != nil {
 		log.Fatalf("Failed to create consumer: %s", err)

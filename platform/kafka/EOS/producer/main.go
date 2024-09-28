@@ -23,7 +23,7 @@ func main() {
 
 	// Kafka producer configuration with Exactly Once Semantics enabled
 	config := &kafka.ConfigMap{
-		"bootstrap.servers":                     "localhost:9092,localhost:9093,localhost:9094",
+		"bootstrap.servers":                     "localhost:19092,localhost:29092,localhost:39092",
 		"acks":                                  "all",
 		"enable.idempotence":                    true,            // Enable idempotence for Exactly Once Semantics
 		"transactional.id":                      transactionalID, // Unique transactional ID for the producer
