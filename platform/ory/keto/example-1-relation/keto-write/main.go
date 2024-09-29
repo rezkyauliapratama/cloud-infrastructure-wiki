@@ -57,6 +57,7 @@ func createRelation(ctx context.Context, client *keto.APIClient, subject, relati
 		SubjectSet: &keto.SubjectSet{
 			Namespace: "groups",
 			Object:    subject,
+			Relation:  "member",
 		},
 	}
 

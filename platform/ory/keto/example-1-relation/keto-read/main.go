@@ -21,7 +21,7 @@ func main() {
 	readClient := keto.NewAPIClient(clientConfig)
 
 	ctx := context.TODO()
-	fmt.Print("connection establish")
+	fmt.Print("connection establish\n")
 	// Read all relations in the "folders" namespace
 	readRelations(ctx, readClient, "folders", "folder:EA", "manage", "user:rezky")
 }
@@ -35,14 +35,14 @@ func readRelations(ctx context.Context, client *keto.APIClient, namespace, objec
 	if err != nil {
 		log.Fatalf("Error reading relations: %v", err)
 	}
-	fmt.Printf("has relation ? %v", response.HasRelationTuples())
+	fmt.Printf("has relation ? %v\n", response.HasRelationTuples())
 	// Print the found relations
 	fmt.Printf("tuples ? %v", response.GetRelationTuples())
 
 	for _, tuple := range response.RelationTuples {
 		object := tuple.GetObject()
 		relation := tuple.GetRelation()
-		subject := tuple.GetSubjectSet().Object
+		subject := tuple.GetSubjectId()
 
 		fmt.Printf("Relation found: %s#%s@%s\n", object, relation, subject)
 
