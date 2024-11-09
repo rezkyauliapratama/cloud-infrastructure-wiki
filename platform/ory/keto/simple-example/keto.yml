@@ -1,7 +1,9 @@
-version: v0.12.0-alpha.0
+version: v0.7.0-alpha.1
 
 log:
   level: debug
+
+dsn: memory
 
 serve:
   read:
@@ -11,14 +13,9 @@ serve:
     host: 0.0.0.0
     port: 4467
 
+
 namespaces:
   - id: 0
-    name: groups
+    name: documents
   - id: 1
-    name: folders
-  - id: 2
-    name: users
-  - id: 3
-    name: units
-  - id: 4
-    name: modules
+    name: departments

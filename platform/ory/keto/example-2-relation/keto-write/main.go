@@ -9,83 +9,123 @@ import (
 )
 
 var (
-	writeApiURL = "http://localhost:4467" // URL for Ory Keto Write API
+	writeApiURL = "http://localhost:4467" // The URL for the Keto write API
 )
 
 func main() {
-	// Initialize the Keto Write API client
-	writeClient := keto.NewAPIClient(&keto.Configuration{
+	client := keto.NewAPIClient(&keto.Configuration{
 		Servers: keto.ServerConfigurations{
 			{URL: writeApiURL},
 		},
 	})
 
+	// Define the ABAC relations for the back-office system
+	relations := []keto.CreateRelationshipBody{
+		// Users Namespace: Defining roles in the "users" namespace
+		{
+			Namespace: keto.PtrString("users"),
+			Object:    keto.PtrString("manager"),
+			Relation:  keto.PtrString("member"),
+			SubjectId: keto.PtrString("user:rezky"),
+		},
+		{
+			Namespace: keto.PtrString("users"),
+			Object:    keto.PtrString("employee"),
+			Relation:  keto.PtrString("member"),
+			SubjectId: keto.PtrString("user:meita"),
+		},
+		{
+			Namespace: keto.PtrString("users"),
+			Object:    keto.PtrString("employee"),
+			Relation:  keto.PtrString("member"),
+			SubjectId: keto.PtrString("user:dio"),
+		},
+
+		// User-Unit Relations
+		{
+			Namespace: keto.PtrString("units"),
+			Object:    keto.PtrString("unit:accounting"),
+			Relation:  keto.PtrString("member"),
+			SubjectId: keto.PtrString("user:rezky"),
+		},
+		{
+			Namespace: keto.PtrString("units"),
+			Object:    keto.PtrString("unit:accounting"),
+			Relation:  keto.PtrString("role"),
+			SubjectSet: &keto.SubjectSet{
+				Namespace: "users",
+				Object:    "user:rezky",
+				Relation:  "manager",
+			},
+		},
+		{
+			Namespace: keto.PtrString("units"),
+			Object:    keto.PtrString("unit:budgeting"),
+			Relation:  keto.PtrString("member"),
+			SubjectId: keto.PtrString("user:dio"),
+		},
+		{
+			Namespace: keto.PtrString("units"),
+			Object:    keto.PtrString("unit:budgeting"),
+			Relation:  keto.PtrString("role"),
+			SubjectSet: &keto.SubjectSet{
+				Namespace: "users",
+				Object:    "user:dio",
+				Relation:  "employee",
+			},
+		},
+
+		// Module Access for Unit Based on Role
+		{
+			Namespace: keto.PtrString("modules"),
+			Object:    keto.PtrString("module:payment"),
+			Relation:  keto.PtrString("manage"),
+			SubjectSet: &keto.SubjectSet{
+				Namespace: "units",
+				Object:    "unit:accounting",
+				Relation:  "manager",
+			},
+		},
+		{
+			Namespace: keto.PtrString("modules"),
+			Object:    keto.PtrString("module:payment"),
+			Relation:  keto.PtrString("view"),
+			SubjectSet: &keto.SubjectSet{
+				Namespace: "units",
+				Object:    "unit:accounting",
+				Relation:  "employee",
+			},
+		},
+		{
+			Namespace: keto.PtrString("modules"),
+			Object:    keto.PtrString("module:ledger"),
+			Relation:  keto.PtrString("manage"),
+			SubjectSet: &keto.SubjectSet{
+				Namespace: "units",
+				Object:    "unit:budgeting",
+				Relation:  "manager",
+			},
+		},
+		{
+			Namespace: keto.PtrString("modules"),
+			Object:    keto.PtrString("module:ledger"),
+			Relation:  keto.PtrString("view"),
+			SubjectSet: &keto.SubjectSet{
+				Namespace: "units",
+				Object:    "unit:budgeting",
+				Relation:  "employee",
+			},
+		},
+	}
+
 	ctx := context.Background()
-
-	// Create relations for EA group
-	createRelation(ctx, writeClient, "group:EA", "manage", "folder:EA")
-
-	// Create relations for PMO group
-	createRelation(ctx, writeClient, "group:PMO", "manage", "folder:PMO")
-
-	// Create relations for IT Strategy group
-	createRelation(ctx, writeClient, "group:ITStrategy", "manage", "folder:ITStrategy")
-	createRelation(ctx, writeClient, "group:ITStrategy", "view", "folder:EA")
-	createRelation(ctx, writeClient, "group:ITStrategy", "view", "folder:PMO")
-
-	// Create relations for Group Head (GH) group
-	createRelation(ctx, writeClient, "group:GH", "manage", "folder:EA")
-	createRelation(ctx, writeClient, "group:GH", "manage", "folder:PMO")
-	createRelation(ctx, writeClient, "group:GH", "manage", "folder:ITStrategy")
-
-	// Add users to their respective groups
-	addMemberToGroup(ctx, writeClient, "user:rezky", "group:EA")
-	addMemberToGroup(ctx, writeClient, "user:meita", "group:EA")
-	addMemberToGroup(ctx, writeClient, "user:dio", "group:PMO")
-	addMemberToGroup(ctx, writeClient, "user:vicky", "group:ITStrategy")
-	addMemberToGroup(ctx, writeClient, "user:ardian", "group:GH")
-
-	fmt.Println("Groups and relationships created successfully.")
-}
-
-// Helper function to create a relation in Ory Keto
-func createRelation(ctx context.Context, client *keto.APIClient, subject, relation, object string) {
-	tuple := keto.CreateRelationshipBody{
-		Namespace: keto.PtrString("folders"),
-		Object:    keto.PtrString(object),
-		Relation:  keto.PtrString(relation),
-		SubjectSet: &keto.SubjectSet{
-			Namespace: "groups",
-			Object:    subject,
-			Relation:  "member",
-		},
+	// Iterate over the relations and create them using the Keto SDK
+	for _, relation := range relations {
+		_, _, err := client.RelationshipApi.CreateRelationship(ctx).CreateRelationshipBody(relation).Execute()
+		if err != nil {
+			log.Printf("Error creating relation: %v", err)
+		} else {
+			fmt.Printf("Successfully created relation: %+v\n", relation)
+		}
 	}
-
-	_, r, err := client.RelationshipApi.CreateRelationship(ctx).CreateRelationshipBody(tuple).Execute()
-	if err != nil {
-		log.Fatalf("Failed to create relation: %v", err)
-	}
-
-	fmt.Printf("Created relation: %s can %s %s\nfull response %v\n", subject, relation, object, r)
-}
-
-// Helper function to add a user to a group
-func addMemberToGroup(ctx context.Context, client *keto.APIClient, user, group string) {
-	tuple := keto.CreateRelationshipBody{
-		Namespace: keto.PtrString("groups"),
-		Object:    keto.PtrString(group),
-		Relation:  keto.PtrString("member"),
-		SubjectId: keto.PtrString(user),
-		SubjectSet: &keto.SubjectSet{
-			Namespace: "users",
-			Object:    user,
-		},
-	}
-
-	_, r, err := client.RelationshipApi.CreateRelationship(ctx).CreateRelationshipBody(tuple).Execute()
-	if err != nil {
-		log.Fatalf("Failed to add user to group: %v", err)
-	}
-
-	fmt.Printf("Added user: %s to group: %s\nfull response %v\n", user, group, r)
 }
